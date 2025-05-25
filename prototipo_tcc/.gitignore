@@ -1,0 +1,31 @@
+# Bytecode e cache do Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Banco de dados local do Django
+src/mysite/db.sqlite3
+
+# Ambientes virtuais (caso existam na raiz do projeto)
+venv/
+.env/
+.venv/
+ENV/
+env/
+
+# Configurações e variáveis de ambiente
+*.env
+
+# Arquivos de sistema/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Arquivos de log e temporários
+*.log
+*.tmp
+
+# Arquivos de mídia e uploads (adicione se usar uploads de arquivos)
+media/
+uploads/

@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- CSS local do Django -->
+  <link rel="stylesheet" href="{% static 'usuarios/style.css' %}" />
+  <title>Login | Controle de Gastos</title>
+</head>
+<body>
+  <main class="container">
+    <h1>Login Controle de Gastos</h1>
+
+    <form action="{% url 'login' %}" method="post" class="form">
+      {% csrf_token %}
+      <div class="input-box">
+        <input type="email" name="username" placeholder="E-mail" required />
+        <i class="bx bxs-user"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Senha" required />
+        <i class="bx bxs-lock-alt"></i>
+      </div>
+
+      {% comment %} <div class="remember-forgot">
+        <label><input type="checkbox" /> Lembrar de mim</label>
+        <a href="">Esqueci minha senha</a>
+      </div> {% endcomment %}
+
+      <button type="submit" class="btn">Login</button>
+
+      <div class="register-link">
+        <p>Não tem conta? <a href="{% url 'signup'%}">Cadastre-se</a></p>
+      </div>
+
+    </form>
+  </main>
+</body>
+</html>
