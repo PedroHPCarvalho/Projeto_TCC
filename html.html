@@ -63,9 +63,9 @@
         <h1 class="mb-4">Olá, <strong>{{ user.username }}</strong> 👋</h1>
 
         <!-- Cards -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 bg-danger text-white">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 bg-primary text-white">
                     <div class="card-body d-flex align-items-center">
                         <i class="bi bi-cash-stack card-icon"></i>
                         <div>
@@ -76,25 +76,13 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card shadow-sm border-0 bg-success text-white">
                     <div class="card-body d-flex align-items-center">
                         <i class="bi bi-piggy-bank card-icon"></i>
                         <div>
-                            <h5 class="card-title mb-1">Total Recebido</h5>
+                            <h5 class="card-title mb-1"> Total Recebido</h5>
                             <p class="card-text fs-5">R$ {{ entradas_totais }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 bg-primary text-white">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="bi bi-calendar2-week card-icon"></i>
-                        <div>
-                            <h5 class="card-title mb-1">Orçamento Livre</h5>
-                            <p class="card-text fs-5">R$ {{ orcamento_livre }}</p>
                         </div>
                     </div>
                 </div>
@@ -107,38 +95,39 @@
             <canvas id="gastosChart" height="120"></canvas>
         </div>
 
-        <!-- Tabela de Gastos -->
-        <div class="mb-5">
-            <h4 class="mb-3"><i class="bi bi-table"></i> Gastos Recentes</h4>
-            <div class="table-responsive rounded shadow-sm">
-                <table class="table table-hover align-middle table-bordered mb-0">
-                    <thead class="table-primary text-center">
+        <!-- Tabela de Registros do Usuário -->
+        <div class="mt-4">
+            <h4 class="mb-3"><i class="bi bi-list-ul"></i> Registros Recentes</h4>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
                         <tr>
                             <th>Data</th>
                             <th>Categoria</th>
-                            <th>Tipo</th>
+                            <th>Tipo de Registro</th>
                             <th>Valor (R$)</th>
                             <th>Descrição</th>
                         </tr>
-                    </thead>
+                    <thead>
                     <tbody>
                         {% for registro in registros %}
                         <tr>
                             <td>{{ registro.date|date:"d/m/Y" }}</td>
                             <td>{{ registro.category }}</td>
                             <td>{{ registro.type_register }}</td>
-                            <td class="text-end">R$ {{ registro.amount|floatformat:2 }}</td>
+                            <td>{{ registro.amount }}</td>
                             <td>{{ registro.description }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center">Nenhum registro encontrado.</td>
+                            <td colspan="4" class="text-center">Nenhum registro encontrado.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
-                </table>
-            </div>
+                </table>    
+            </div>          
         </div>
+
 
        <!-- Chat de Gastos -->
         <div class="w-100 mt-5">
