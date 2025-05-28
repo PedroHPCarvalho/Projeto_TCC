@@ -17,9 +17,7 @@
 
     body {
       min-height: 100vh;
-      background: 
-        linear-gradient(rgba(13, 27, 42, 0.6), rgba(27, 38, 59, 0.6)),
-        url("{% static 'img/static/img/' %}") no-repeat center center fixed;
+      background: url("{% static 'usuarios/fundo_max_qualidade.webp' %}") no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -128,8 +126,7 @@
 </head>
 <body>
   <div class="container">
-
-     <h1>Login Controle de Gastos</h1>
+    <h1>Login Controle de Gastos</h1>
 
     <form action="{% url 'login' %}" method="post" class="form">
       {% csrf_token %}
@@ -143,17 +140,11 @@
         <i class="bx bxs-lock-alt"></i>
       </div>
 
-      {% comment %} <div class="remember-forgot">
-        <label><input type="checkbox" /> Lembrar de mim</label>
-        <a href="">Esqueci minha senha</a>
-      </div> {% endcomment %}
-
       <button type="submit" class="btn">Login</button>
 
       <div class="register-link">
         <p>Não tem conta? <a href="{% url 'signup'%}">Cadastre-se</a></p>
       </div>
-
     </form>
   </div>
 </body>

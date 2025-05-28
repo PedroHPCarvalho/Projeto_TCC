@@ -3,7 +3,7 @@ from openai import AzureOpenAI
 from datetime import date
 
 sys.stdout.reconfigure(encoding="utf-8")
-hoje = date.today()
+
 
 endpoint = "https://pedro-m9q6097t-eastus2.cognitiveservices.azure.com/"
 model_name = "gpt-4o-mini"
@@ -20,6 +20,7 @@ client = AzureOpenAI(
 
 
 def go_ia(message):
+    hoje = date.today() 
     response = client.chat.completions.create(
         messages=[
             {

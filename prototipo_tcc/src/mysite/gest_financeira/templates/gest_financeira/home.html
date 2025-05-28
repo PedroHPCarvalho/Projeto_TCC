@@ -5,50 +5,119 @@
     <title>Dashboard | Gestão de Gastos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Ícones Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #000000, #242424);
+      font-family: 'Poppins', sans-serif;
+      color: #f8f9fa;
+      padding-bottom: 80px;
+    }
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Poppins', sans-serif;
-        }
+    h3, h4 {
+      font-weight: 600;
+    }
 
-        h3, h4, h5 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #333;
-        }
+    .card {
+      border: none;
+      border-radius: 1rem;
+      transition: transform 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
 
-        .card-icon {
-            font-size: 2rem;
-            margin-right: 10px;
-        }
+    .card:hover {
+      transform: scale(1.02);
+    }
 
-        #chat-log {
-            height: 10px;
-            overflow-y: auto;
-        }
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
 
-        #chat-input {
-            max-length: 30;
-        }
+    .btn-sair {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      transition: background 0.3s ease;
+    }
 
-        /* Botão sair fixo no canto superior direito */
-        #btn-sair {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 1050;
-            font-size: 0.9rem;
-            padding: 6px 12px;
-        }
-    </style>
+    .btn-sair:hover {
+      background-color: #e63946;
+    }
+
+    .table {
+      background-color: rgba(15, 14, 14, 0.05);
+    }
+
+    .table thead th {
+      color: #ffc107;
+    }
+
+    /* Chat estilo app */
+    #chat-log {
+      height: 200px;
+      overflow-y: auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    #chat-log div {
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      border-radius: 18px;
+      max-width: 75%;
+    }
+
+    .user-msg {
+      background-color: #0d6efd;
+      align-self: flex-end;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background-color: #6c757d;
+      align-self: flex-start;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    canvas {
+      max-height: 300px;
+    }
+
+    @media (max-width: 768px) {
+      .card .card-title {
+        font-size: 1rem;
+      }
+
+      .card .card-text {
+        font-size: 0.9rem;
+      }
+
+      .card-icon {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
     <!-- Botão sair fixo -->
@@ -60,59 +129,56 @@
     </form>
 
     <div class="container py-5">
-        <h1 class="mb-4">Olá, <strong>{{ user.username }}</strong> 👋</h1>
+        <h1 class="mb-4">Bem-vindo, <strong>{{ user.username }}</strong> 👋</h1>
 
         <!-- Cards -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 bg-danger text-white">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="bi bi-cash-stack card-icon"></i>
-                        <div>
-                            <h5 class="card-title mb-1">Gastos Totais</h5>
-                            <p class="card-text fs-5">R$ -{{ gastos_totais }}</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="row text-center g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card p-4">
+            <div class="card-body">
+                <i class="bi bi-cash-stack card-icon text-warning"></i>
+                <h5 class="card-title">Gasto Total</h5>
+                <p class="card-text">R$ -{{ gastos_totais }}</p>
             </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 bg-success text-white">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="bi bi-piggy-bank card-icon"></i>
-                        <div>
-                            <h5 class="card-title mb-1">Total Recebido</h5>
-                            <p class="card-text fs-5">R$ {{ entradas_totais }}</p>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card shadow-sm border-0 bg-primary text-white">
-                    <div class="card-body d-flex align-items-center">
-                        <i class="bi bi-calendar2-week card-icon"></i>
-                        <div>
-                            <h5 class="card-title mb-1">Orçamento Livre</h5>
-                            <p class="card-text fs-5">R$ {{ orcamento_livre }}</p>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+            <div class="card-body">
+                <i class="bi bi-piggy-bank card-icon text-success"></i>
+                <h5 class="card-title">Total Recebido</h5>
+                <p class="card-text">R$ {{ entradas_totais }}</p>
             </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+            <div class="card-body">
+                <i class="bi bi-bullseye card-icon text-info"></i>
+                <h5 class="card-title mb-1">Orçamento Livre</h5>
+                <p class="card-text fs-5">R$ {{ orcamento_livre }}</p>
+            </div>
+            </div>
+        </div>
         </div>
 
         <!-- Gráfico -->
-        <div class="mt-5">
-            <h3 class="mb-3"><i class="bi bi-bar-chart"></i> Descrição de Gastos</h3>
-            <canvas id="gastosChart" height="120"></canvas>
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3">Gastos por Categoria</h4>
+            <div class="d-flex justify-content-center">
+                <div style="width: 100%; max-width: 1100px;">
+                    {{ grafico|safe }}
+                </div>
+            </div>
         </div>
 
+
         <!-- Tabela de Gastos -->
-        <div class="mb-5">
-            <h4 class="mb-3"><i class="bi bi-table"></i> Gastos Recentes</h4>
-            <div class="table-responsive rounded shadow-sm">
-                <table class="table table-hover align-middle table-bordered mb-0">
-                    <thead class="table-primary text-center">
+       <div class="card p-4 mb-4">
+        <h4 class="mb-3">Histórico de Gastos</h4>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover text-white align-middle">
+                    <thead>
                         <tr>
                             <th>Data</th>
                             <th>Categoria</th>
@@ -141,13 +207,13 @@
         </div>
 
        <!-- Chat de Gastos -->
-        <div class="w-100 mt-5">
+         <div class="card p-4">
             <h4><i class="bi bi-chat-dots"></i> Adicionar Gasto via Chat</h4>
             <div id="chat-feedback" class="mb-2"></div> <!-- Feedback aparece aqui -->
-            <div id="chat-log" class="border rounded p-3 mb-3 bg-white"></div>
+            <div id="chat-log" class="chat-container mb-3"></div>
             <div class="input-group">
-                <input type="text" id="chat-input" class="form-control" placeholder="Ex: Transporte 50.75" maxlength="30">
-                <button class="btn btn-primary" id="send-button">
+                <input type="text" id="chat-input" class="form-control" placeholder="Ex: Gastei 30 com mercado">
+                <button class="btn btn-warning" id="send-button">
                     <i class="bi bi-send"></i> Enviar
                 </button>
             </div>
@@ -204,13 +270,17 @@
     <script>
         document.getElementById('send-button').addEventListener('click', enviarMensagem);
         document.getElementById('chat-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') enviarMensagem();
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Impede o envio do formulário ao pressionar Enter
+                enviarMensagem();
+            }
         });
 
         function enviarMensagem() {
             const input = document.getElementById('chat-input');
             const mensagem = input.value.trim();
             const feedback = document.getElementById('chat-feedback');
+            const chatLog = document.getElementById('chat-log');
 
             if (!mensagem) return;
             if (mensagem.length > 30) {
@@ -218,6 +288,9 @@
                 feedback.className = 'text-danger';
                 return;
             }
+
+            // Adiciona a mensagem do usuário ao chat
+            chatLog.innerHTML += `<div class="text-end"><strong>Você:</strong> ${mensagem}</div>`;
 
             fetch("{% url 'process_chat' %}", {
                 method: 'POST',
@@ -229,9 +302,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                feedback.textContent = data.mensagem;
-                feedback.className = data.status === 'ok' ? 'text-success' : 'text-danger';
+                // Adiciona a resposta da IA ao chat
+                chatLog.innerHTML += `<div><strong>Assistente:</strong> ${data.mensagem}</div>`;
+                feedback.textContent = '';
                 input.value = '';
+                chatLog.scrollTop = chatLog.scrollHeight; // Rola para o final do chat
             });
         }
     </script>
